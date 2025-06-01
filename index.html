@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComfyUI File Explorer</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app-container">
+        <header id="control-panel">
+            <h1>主控制面板</h1>
+            <div id="server-connection">
+                <label for="server-address">服务器地址:</label>
+                <input type="text" id="server-address" placeholder="IP:端口">
+                <button id="save-server-btn">保存</button>
+                <button id="delete-server-btn">删除</button>
+                <label for="saved-servers">已存服务器:</label>
+                <select id="saved-servers"></select>
+            </div>
+            <div id="probe-controls">
+                <label for="start-number">起始编号:</label>
+                <input type="number" id="start-number" min="1" max="99999" value="1">
+                <label for="probe-quantity">探测数量:</label>
+                <input type="number" id="probe-quantity" min="1" max="1000" value="100">
+                <label for="file-type">文件类型:</label>
+                <select id="file-type">
+                    <option value="PNG" selected>PNG</option>
+                    <option value="JPG">JPG</option>
+                    <option value="WEBP">WEBP</option>
+                </select>
+                <label for="subfolder-input">子文件夹:</label>
+                <input type="text" id="subfolder-input" value="">
+            </div>
+            <div id="filename-pattern">
+                <label for="file-prefix">文件名前缀:</label>
+                <input type="text" id="file-prefix" value="ComfyUI_">
+                <label for="digit-count">编号位数:</label>
+                <select id="digit-count">
+                    <option value="3">3位</option>
+                    <option value="4">4位</option>
+                    <option value="5" selected>5位</option>
+                    <option value="6">6位</option>
+                </select>
+                <input type="checkbox" id="underscore-suffix-checkbox" checked>
+                <label for="underscore-suffix-checkbox">添加下划线后缀</label>
+            </div>
+        </header>
+
+        <nav id="operation-toolbar">
+            <h2>操作工具栏</h2>
+            <button id="probe-files-btn">探测文件</button>
+            <button id="stop-probing-btn">停止探测</button>
+            <button id="reset-settings-btn">重置设定</button>
+            <button id="refresh-cache-btn">刷新缓存</button>
+            <input type="checkbox" id="auto-refresh-checkbox">
+            <label for="auto-refresh-checkbox">自动刷新</label>
+        </nav>
+
+        <section id="status-display">
+            <h3>状态显示区</h3>
+            <progress id="probe-progress" value="0" max="100"></progress> <span id="progress-text">已完成: 0/0</span>
+            <div id="status-messages"></div>
+            <div id="current-pattern-display">当前匹配模式: ComfyUI_00000_.png</div>
+        </section>
+
+        <main id="image-display-area">
+            <h4>图片展示区</h4>
+            <div id="stats-bar"></div>
+            <div id="image-grid">
+                <!-- Image thumbnails will be dynamically inserted here -->
+            </div>
+        </main>
+
+        <footer id="batch-operation-bar">
+            <h5>批量操作栏</h5>
+            <span id="selected-count-text">已选择: 0个文件</span>
+            <button id="download-selected-btn">下载选中</button>
+            <button id="select-all-btn">全选</button>
+            <button id="deselect-all-btn">取消全选</button>
+        </footer>
+    </div>
+
+    <div id="image-preview-modal" class="modal" style="display: none;">
+        <button class="close-modal-btn">&times;</button>
+        <img id="modal-image-src" src="" alt="Preview">
+        <div id="modal-file-info"></div>
+        <h6>图片预览模态框</h6>
+    </div>
+
+    <script src="js/config.js" defer></script>
+    <script src="js/api.js" defer></script>
+    <script src="js/ui.js" defer></script>
+    <script src="js/app.js" defer></script>
+</body>
+</html>

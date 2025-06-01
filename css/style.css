@@ -1,0 +1,599 @@
+/* 1. General Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* System font stack */
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 0;
+    color: #212529; /* Darker text for better contrast */
+    font-size: 1rem; /* Use rem for scalability */
+    line-height: 1.6; /* Improved line spacing */
+    -webkit-font-smoothing: antialiased; /* Smoother fonts on WebKit */
+    -moz-osx-font-smoothing: grayscale; /* Smoother fonts on Firefox */
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #111;
+}
+
+div#app-container {
+    max-width: 1300px; /* Slightly wider */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08); /* Softer shadow */
+    border-radius: 8px; /* Consistent border radius */
+}
+
+/* Global Button Styles (can be overridden) */
+button, input[type="button"], input[type="submit"] {
+    padding: 0.5rem 1rem; /* Use rem */
+    border: none;
+    border-radius: 0.3rem; /* Use rem */
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, transform 0.1s ease;
+    font-size: 0.9rem; /* Use rem */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08); /* Softer shadow */
+    letter-spacing: 0.5px; /* Add some letter spacing */
+}
+button:hover, input[type="button"]:hover, input[type="submit"]:hover {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    transform: translateY(-1px);
+}
+button:active, input[type="button"]:active, input[type="submit"]:active {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    transform: translateY(0px);
+}
+button:disabled, input[type="button"]:disabled, input[type="submit"]:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* Default button style (e.g., for control panel) */
+#control-panel button {
+    background-color: #6c757d; /* Standard Grey */
+    color: white;
+}
+#control-panel button:hover {
+    background-color: #5a6268;
+}
+
+
+/* 2. Control Panel (div#control-panel) */
+#control-panel {
+    display: grid;
+    grid-template-areas:
+        "server"
+        "probe"
+        "pattern";
+    gap: 25px; /* Increased gap */
+    margin-bottom: 25px; /* Increased margin */
+    padding: 20px; /* Increased padding */
+    border: 1px solid #e0e0e0; /* Lighter border */
+    border-radius: 8px; /* Consistent radius */
+}
+
+#control-panel h1 {
+    /* This h1 is just a title for the section, not a specific area */
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+#server-connection, #probe-controls, #filename-pattern {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px; /* Increased gap */
+    padding: 15px; /* Increased padding */
+    border: 1px solid #e0e0e0; /* Lighter border */
+    border-radius: 6px; /* Consistent radius */
+}
+
+#server-connection { grid-area: server; }
+#probe-controls { grid-area: probe; }
+#filename-pattern { grid-area: pattern; }
+
+
+#control-panel label {
+    margin-right: 8px; /* Increased margin */
+    font-weight: bold;
+    font-size: 0.875rem; /* Use rem */
+}
+
+#control-panel input[type="text"],
+#control-panel input[type="number"],
+#control-panel select {
+    padding: 0.5rem 0.75rem; /* Use rem */
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem; /* Use rem */
+    min-width: 160px;
+    box-sizing: border-box;
+    font-size: 0.9rem; /* Use rem */
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+#control-panel input[type="text"]:focus,
+#control-panel input[type="number"]:focus,
+#control-panel select:focus {
+    border-color: #86b7fe; /* Bootstrap focus color */
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); /* Bootstrap focus shadow */
+    outline: none;
+}
+
+
+/* 3. Operation Toolbar (div#operation-toolbar) */
+#operation-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px; /* Increased gap */
+    margin-bottom: 25px; /* Increased margin */
+    padding: 15px; /* Increased padding */
+    border: 1px solid #e0e0e0; /* Lighter border */
+    border-radius: 8px; /* Consistent radius */
+}
+
+#operation-toolbar h2 {
+    margin-top:0;
+    margin-bottom: 10px; /* Increased margin */
+    font-size: 1.3em; /* Slightly larger */
+    width: 100%;
+}
+
+/* Default button style for toolbar */
+#operation-toolbar button {
+    background-color: #6c757d; /* Grey */
+    color: white;
+}
+#operation-toolbar button:hover {
+    background-color: #5a6268;
+}
+
+/* Prominent button: Probe Files */
+#operation-toolbar button#probe-files-btn {
+    background-color: #28a745; /* Green */
+    color: white;
+}
+#operation-toolbar button#probe-files-btn:hover {
+    background-color: #218838;
+}
+
+/* Danger button: Stop Probing */
+#operation-toolbar button#stop-probing-btn {
+    background-color: #dc3545; /* Red */
+    color: white;
+}
+#operation-toolbar button#stop-probing-btn:hover {
+    background-color: #c82333;
+}
+
+#operation-toolbar label {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem; /* Use rem */
+}
+#operation-toolbar input[type="checkbox"] {
+    margin-right: 0.3rem; /* Use rem */
+    transform: scale(1.1); /* Slightly larger */
+}
+
+
+/* Field error message styling */
+.field-error-message {
+    display: block; /* Ensure it takes its own line */
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+    color: #dc3545; /* Bootstrap danger color */
+}
+.input-error { /* Class to add to input fields with errors */
+    border-color: #dc3545 !important; /* Ensure override */
+}
+
+/* Button with spinner */
+button .spinner {
+    display: inline-block;
+    width: 0.9rem;
+    height: 0.9rem;
+    vertical-align: text-bottom;
+    border: .2em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: button-spin .75s linear infinite;
+    margin-left: 0.5rem;
+}
+
+@keyframes button-spin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* 4. Status Display Area (div#status-display) */
+#status-display {
+    margin-bottom: 25px; /* Increased margin */
+    padding: 15px; /* Increased padding */
+    border: 1px solid #e0e0e0; /* Lighter border */
+    border-radius: 8px; /* Consistent radius */
+}
+#status-display h3 {
+    margin-top:0;
+    margin-bottom: 10px; /* Increased margin */
+    font-size: 1.3em; /* Slightly larger */
+}
+
+
+#probe-progress {
+    width: 100%;
+    height: 22px; /* Slightly taller */
+    margin-bottom: 12px; /* Increased margin */
+    border-radius: 6px; /* Add radius to progress bar */
+}
+/* Styling for progress bar appearance */
+#probe-progress::-webkit-progress-bar {
+    background-color: #e9ecef;
+    border-radius: 6px;
+}
+#probe-progress::-webkit-progress-value {
+    background-color: #007bff; /* Blue */
+    border-radius: 6px;
+    transition: width 0.1s ease;
+}
+#probe-progress::-moz-progress-bar {
+    background-color: #007bff; /* Blue */
+    border-radius: 6px;
+    transition: width 0.1s ease;
+}
+
+#status-messages {
+    font-size: 0.95em; /* Slightly larger */
+    color: #495057; /* Softer black */
+    padding: 10px; /* Increased padding */
+    background-color: #f8f9fa; /* Lighter background */
+    border: 1px solid #dee2e6; /* Softer border */
+    border-radius: 6px; /* Consistent radius */
+    margin-top: 10px;
+    height: 120px; /* Increased height */
+    overflow-y: auto;
+    line-height: 1.6; /* Improved line spacing */
+}
+#status-messages div {
+    padding: 3px 5px; /* Padding for each message */
+}
+#status-messages div.error-message {
+    color: #c82333; /* Darker red for errors */
+    font-weight: bold;
+    background-color: #fbe<x_bin_556>; /* Light red background for errors */
+    border-left: 3px solid #c82333;
+    padding-left: 10px;
+}
+
+#current-pattern-display {
+    font-size: 0.95em; /* Slightly larger */
+    color: #495057; /* Softer black */
+    padding: 8px 10px; /* Increased padding */
+    background-color: #e9ecef; /* Different background */
+    border: 1px solid #ced4da; /* Softer border */
+    border-radius: 6px; /* Consistent radius */
+    margin-top: 10px; /* Increased margin */
+    font-family: 'Courier New', Courier, monospace; /* Monospace for pattern */
+}
+
+/* 5. Image Display Area (div#image-display-area) */
+#image-display-area h4 {
+     margin-top:0;
+    margin-bottom: 10px; /* Increased margin */
+    font-size: 1.3em; /* Slightly larger */
+}
+#stats-bar {
+    padding: 12px 15px; /* Increased padding */
+    border: 1px solid #e0e0e0; /* Lighter border */
+    margin-bottom: 15px; /* Increased margin */
+    border-radius: 6px; /* Consistent radius */
+    background-color: #f8f9fa; /* Lighter background */
+    font-size: 0.95em;
+}
+
+#image-grid {
+    display: grid;
+    /* Columns handled by media queries below */
+    grid-template-columns: repeat(5, 1fr); /* Default to 5 for desktop */
+    gap: 18px; /* Slightly increased gap */
+    border: 1px solid #e0e0e0; /* Lighter border */
+    padding: 15px; /* Increased padding */
+    border-radius: 8px; /* Consistent radius */
+}
+
+.image-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff; /* White background for cards */
+    border: 1px solid #dee2e6; /* Softer border */
+    border-radius: 6px; /* Consistent radius */
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Softer shadow */
+    transition: box-shadow 0.2s ease;
+}
+.image-card:hover {
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1); /* Enhanced hover shadow */
+}
+
+
+.image-thumbnail-container {
+    position: relative;
+    width: 100%;
+    padding-top: 66.66%; /* Corrected to 3:2 Aspect Ratio */
+    background-color: #e9ecef;
+    cursor: pointer;
+    overflow: hidden; /* Ensure image doesn't break container bounds */
+}
+
+.lazy-load-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: #f8f9fa;
+    transition: opacity 0.3s ease; /* Fade in image */
+    opacity: 0; /* Start transparent, JS will make it opaque on load */
+}
+.lazy-load-image[src]:not([src*="base64"]) { /* When actual src is set */
+    opacity: 1;
+}
+
+
+.image-loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px; /* Slightly larger */
+    height: 32px; /* Slightly larger */
+    border: 4px solid rgba(0,0,0,0.1); /* Thicker border */
+    border-top-color: #007bff; /* Blue */
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite; /* Faster spin */
+    display: none;
+}
+
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.image-card-info {
+    padding: 12px; /* Increased padding */
+    font-size: 0.9em;
+    border-top: 1px solid #e9ecef; /* Separator line */
+}
+
+.image-card-info p {
+    margin: 6px 0; /* Adjusted margin */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.image-card-info p.filename { /* Specific class for filename if needed */
+    font-weight: 600; /* Slightly bolder */
+    color: #343a40;
+}
+
+
+.image-select-checkbox {
+    float: right;
+    margin-left: 8px; /* Increased margin */
+    transform: scale(1.1); /* Slightly larger checkbox */
+}
+
+
+/* 6. Batch Operation Bar (div#batch-operation-bar) */
+#batch-operation-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(40, 40, 40, 0.95); /* Darker, more opaque */
+    color: white;
+    padding: 12px 25px; /* Adjusted padding */
+    display: none;
+    align-items: center;
+    gap: 20px; /* Increased gap */
+    box-sizing: border-box;
+    z-index: 100;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+#batch-operation-bar h5 { /* This h5 was in HTML, but not used. Removing for clarity or style if it appears */
+    display: none;
+}
+#selected-count-text {
+    font-weight: 500;
+}
+
+/* Prominent button: Download Selected */
+#batch-operation-bar button#download-selected-btn {
+    background-color: #007bff; /* Blue */
+    color: white;
+}
+#batch-operation-bar button#download-selected-btn:hover {
+    background-color: #0069d9;
+}
+/* Other batch buttons default styling */
+#batch-operation-bar button {
+    background-color: #6c757d; /* Grey */
+    color: white;
+}
+#batch-operation-bar button:hover {
+    background-color: #5a6268;
+}
+
+
+/* 7. Image Preview Modal (div#image-preview-modal) */
+#image-preview-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+    padding: 20px;
+    box-sizing: border-box;
+}
+#image-preview-modal h6 { /* For the "图片预览模态框" text */
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 1.5em;
+}
+
+
+#image-preview-modal .close-modal-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 30px;
+    color: #fff;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#modal-image-src {
+    display: block; /* Remove extra space below image if it's inline */
+    max-width: 90vw;  /* Use viewport width */
+    max-height: 75vh; /* Use viewport height, leave space for info */
+    object-fit: contain;
+    border: 3px solid #fff;
+    border-radius: 5px;
+    margin: 0 auto; /* Center image if it's smaller than max-width */
+}
+
+#modal-file-info {
+    color: #f1f1f1; /* Lighter color for better contrast on dark background */
+    text-align: left; /* Align text to the left for readability */
+    margin-top: 15px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 4px;
+    max-width: 70vw; /* Limit width of info box */
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.9em;
+    line-height: 1.6;
+}
+#modal-file-info p {
+    margin: 8px 0;
+}
+#modal-file-info strong {
+    color: #fff; /* White color for labels */
+    margin-right: 8px;
+}
+
+
+/* 8. Basic Responsiveness */
+
+/* Control Panel Adjustments */
+@media (max-width: 991px) { /* Medium devices (tablets, less than 992px) */
+    #control-panel {
+        grid-template-areas: /* Stack sections earlier for clarity */
+            "server"
+            "probe"
+            "pattern";
+    }
+     #server-connection, #probe-controls, #filename-pattern {
+        /* Inputs might become too cramped if flex-wrap tries to keep them on one line */
+        /* Consider stacking items within each section sooner if needed */
+         flex-direction: column;
+         align-items: stretch;
+    }
+    #control-panel input[type="text"],
+    #control-panel input[type="number"],
+    #control-panel select,
+    #control-panel button {
+        width: 100%; /* Make form elements full width for easier tapping */
+        min-width: 0; /* Reset min-width */
+        margin-bottom: 5px; /* Add some space when stacked */
+    }
+    #control-panel label {
+        margin-bottom: 3px; /* Space between label and input when stacked */
+        width: 100%; /* Ensure label takes full width */
+    }
+}
+
+
+/* Image Grid Columns - These are fine as they are specific and ordered by size */
+@media (max-width: 480px) { /* Small Mobile */
+    #image-grid { grid-template-columns: 1fr; }
+}
+@media (min-width: 481px) and (max-width: 767px) { /* Mobile */
+    #image-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 768px) and (max-width: 991px) { /* Tablet */
+    #image-grid { grid-template-columns: repeat(3, 1fr); }
+    /* Control panel already stacked at this point by the above rule */
+}
+@media (min-width: 992px) and (max-width: 1199px) { /* Large Tablet */
+    #image-grid { grid-template-columns: repeat(4, 1fr); }
+    /* Control panel default grid (3 sections vertically) should be fine here */
+}
+/* Desktop (>1200px) uses the default of 5 columns set on #image-grid */
+
+
+@media (max-width: 767px) { /* General Mobile Stack for other elements (covers mobile and small mobile) */
+    /* #control-panel already handled by max-width: 991px for stacking earlier */
+    /* #server-connection, #probe-controls, #filename-pattern already handled */
+    /* #control-panel input/select/button already handled */
+
+    #operation-toolbar {
+        padding: 10px;
+    }
+    #operation-toolbar button {
+        width: calc(50% - 6px); /* Two buttons per row, accounting for gap */
+        margin-bottom: 8px;
+    }
+    #operation-toolbar label { /* Auto-refresh checkbox */
+        width: 100%;
+        margin-top: 5px;
+        justify-content: center; /* Center the checkbox and label */
+    }
+
+
+    #batch-operation-bar {
+        padding: 8px 15px; /* Reduce padding */
+        flex-direction: column; /* Stack items vertically */
+        gap: 8px; /* Adjust gap for stacked items */
+    }
+    #batch-operation-bar span#selected-count-text {
+        margin-bottom: 5px; /* Add space below text when stacked */
+    }
+    #batch-operation-bar button {
+        width: 100%; /* Make buttons full width */
+        text-align: center;
+        padding: 10px 12px; /* Ensure decent tap height */
+    }
+
+    #modal-file-info {
+        max-width: 90vw; /* Allow info to use more width on mobile */
+    }
+}
+
+/* Minor adjustments for very small screens if needed, e.g. < 360px */
+@media (max-width: 360px) {
+    body { font-size: 14px; } /* Slightly smaller base font for very small devices */
+
+    #operation-toolbar button {
+        width: 100%; /* Stack all buttons in toolbar */
+    }
+}
